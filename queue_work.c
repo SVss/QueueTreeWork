@@ -37,10 +37,20 @@ int dequeue(TQueue *q) {
 }   /* queue_pop */
 
 
-void print_queue(TQueue q) {
+void queue_print(TQueue q) {
     TQueueNode *tmp = q.first;
     while (tmp != NULL) {
         printf("%d ", tmp->value);
         tmp = tmp->next;
     }
 }   /* print_queue */
+
+void queue_free(TQueue *q) {
+    if (q == NULL) {
+        return;
+    }
+
+    while (q->first != NULL) {
+        dequeue(q);
+    }
+}   /* queue_free */

@@ -38,7 +38,7 @@ int main() {
     }
 
     printf("\n*** Queue:\n");
-    print_queue(queue);
+    queue_print(queue);
 
     for (i = 0; i < n; ++i) {
         tree_add_number(&tree, dequeue(&queue) );
@@ -51,6 +51,8 @@ int main() {
 
     printf("\n\n*** Cutted tree: \n");
     tree_print(tree);
+
+    tree_free(&tree);
 
     getchar();
 	return 0;

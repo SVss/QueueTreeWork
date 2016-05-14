@@ -16,6 +16,8 @@ typedef struct TQueue {
 void enqueue(TQueue *q, int value);
 int dequeue(TQueue *q);
 
-void print_queue(TQueue q);
+void queue_print(TQueue q);
+
+void queue_free(TQueue *q);
 
 #endif // QUEUE_WORK_H

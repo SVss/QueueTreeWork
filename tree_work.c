@@ -39,23 +39,34 @@ TTreeNode *tree_add_number(TTreeNode **root, int value) {
 }   /* add_number */
 
 
-typedef void (*process_handler)(TTreeNode* node);
+typedef void (*process_handler_const)(TTreeNode* node);
 
-void ABR(TTreeNode *root, process_handler process) {
+void ABR_const(TTreeNode *root, process_handler_const process) {
     if (root != NULL) {
-        ABR(root->left, process);
-        ABR(root->right, process);
+        ABR_const(root->left, process);
+        ABR_const(root->right, process);
+        process(root);
+    }
+}   /* ABR_const */
+
+void ARB_const(TTreeNode *root, process_handler_const process) {
+    if (root != NULL) {
+        ARB_const(root->left, process);
+        process(root);
+        ARB_const(root->right, process);
+    }
+}   /* ARB_const */
+
+
+typedef void (*process_handler)(TTreeNode** node);
+
+void ABR(TTreeNode **root, process_handler process) {
+    if ( (root != NULL) && ( (*root) != NULL) ) {
+        ABR( &( (*root)->left), process);
+        ABR( &( (*root)->right), process);
         process(root);
     }
 }   /* ABR */
-
-void ARB(TTreeNode *root, process_handler process) {
-    if (root != NULL) {
-        ARB(root->left, process);
-        process(root);
-        ARB(root->right, process);
-    }
-}   /* ARB */
 
 
 void print_node(TTreeNode *node) {
@@ -63,7 +74,7 @@ void print_node(TTreeNode *node) {
 }   /* print_node */
 
 void tree_print(TTreeNode *root) {
-    ARB(root, &print_node);
+    ARB_const(root, &print_node);
 }   /* print_tree */
 
 
@@ -73,6 +84,15 @@ void remove_node(TTreeNode **node) {
         (*node) = NULL;
     }
 }   /* remove_node */
+
+void tree_free(TTreeNode **root) {
+    if ((root == NULL) || ((*root) == NULL) ){
+        return;
+    }
+
+    ABR(root, remove_node);
+
+}   /* tree_free */
 
 
 int has_two(TTreeNode *node) {
@@ -109,6 +129,6 @@ void tree_cut(TTreeNode **root) {
     if ( (root != NULL) && is_leaf(*root) ) {
         remove_node(root);
     } else {
-        ABR( (*root), cut_nodes);
+        ABR_const( (*root), cut_nodes);
     }
 }   /* cut_tree */

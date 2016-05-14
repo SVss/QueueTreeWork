@@ -16,4 +16,6 @@ TTreeNode *tree_add_number(TTreeNode **root, int value);
 
 void tree_cut(TTreeNode **root);
 
+void tree_free(TTreeNode **root);
+
 #endif // TREE_WORK_H
